@@ -29,7 +29,7 @@ jobs:
           cd functions
           npm ci
 
-      - name: Build function
+      - name: Build functions
         run: |
           cd functions
           npm run lint --if-present
@@ -52,8 +52,14 @@ jobs:
           cd functions
           npm ci
 
-      - name: Deploy to Firebase
+      - name: Build functions
         run: |
           cd functions
           npm run build
-          npm run deploy --token ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
