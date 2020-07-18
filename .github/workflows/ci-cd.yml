@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI - CD
+name: CI/CD
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -47,8 +47,13 @@ jobs:
         with:
           node-version: 12
 
-      - name: Deploy to Firebase
-        working-directory: ./functions
+      - name: Install dependencies
         run: |
           cd functions
+          npm ci
+
+      - name: Deploy to Firebase
+        run: |
+          cd functions
+          npm run build
           npm run deploy --token ${{ secrets.FIREBASE_TOKEN }}
